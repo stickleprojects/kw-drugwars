@@ -17,34 +17,23 @@
 </template>
 
 
+<script setup>
+import { drugDataStore } from '@/datastore';
+
+</script>
+
 <script>
 
 export default {
     name:"city-info",
     props: {
+        'user':Object,
+        'city':Object
         
-        'user': {
-            name: String,
-            balance: Number,
-            products:[
-                {id: String, name: String, price: Number, quantity:Number}
-            ]
-        },
-        'city': {
-            name: String,
-            products:[
-                {id: String, name: String, price: Number, quantity:Number}
-            ]
-        }
     },
-    _methods: {
+    methods: {
         canSell(item) {
-            var userItem = this.user.products.find((x) => x.id == item.id);
-            if (!userItem) {
-                return false;
-
-            }
-            return true;
+            return this.drugStore.canSell(this.user, item.id);
         },
         sellItem(item) {
             let x = prompt("how many");
@@ -54,16 +43,8 @@ export default {
             }
             console.log("selling %d items", qty);
 
-            var userItem = this.user.products.find((x) => x.id == item.id);
-
-            if (qty > userItem.quantity) {
-                alert("thats too many, you only have " + userItem.quantity + " available!");
-                return;
-            }
-
-            const total = qty * item.price;
-            alert("Sold " + qty + " for a total of " + total);
-
+            this.drugStore.sellProduct(this.user, item.id, qty, item.price)
+            
             console.log(item.id);
         },
         buyItem(item) {
@@ -84,18 +65,16 @@ export default {
                 alert("Sorry " + this.user.name + ", but you cant afford that, its " + total + " and you only have " + this.user.balance);
                 return;
             }
+
+            this.drugStore.buyProduct(this.user, item.id, qty, item.price)
+            
             console.log(item.id);
         }
     },
-    get methods() {
-        return this._methods;
-    },
-    set methods(value) {
-        this._methods = value;
-    },
+   
     data() {
         return {
-        
+        drugStore: drugDataStore(),
         fields:[
         
             {key:"name", sortable: true, tdClass:"text"},

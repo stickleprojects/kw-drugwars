@@ -1,17 +1,23 @@
 <template>
   <div class="hello">
-    <h1>Welcome {{ user.name }}</h1>
-    <h2>Balance {{ user.balance }} {{ user.currency }}</h2>
+    <h1>Welcome {{ store.user.name }}</h1>
+    <h2>Balance {{ store.user.balance }} {{ store.user.currency }}</h2>
     <div>
-      <div v-for="city in cities" v-bind:key="city.name">
-        <City :city="city" :user="user" />
+      <div v-for="city in store.cities" v-bind:key="city.name">
+        <City :city="city" :user="store.user" />
       </div>
     </div>
   </div>
 </template>
 
+<script setup>
+import { drugDataStore } from '@/datastore';
+
+const store = drugDataStore();
+</script>
 <script>
 import City from './City.vue';
+
 
 export default {
   name: 'HelloWorld',
@@ -19,31 +25,10 @@ export default {
     msg: String
   },
   components: {
-    City
+    City,
+    
   },
-  data() {
-    return {
-      user: {
-        name:"kieron",
-        balance:214.34,
-        currency:"GBP",
-        products:[
-          { id: 1, name: "heroin",  quantity: 23}
-        ]
-      },
-      cities:[
-      { name:"london", products:[
-        { id: 1, name: "heroin", price: 23.23, quantity: 23}
-      ]},
-      { name:"new york", products:[
-        { id: 1, name: "heroin", price: 93.23, quantity: 33},
-        { id: 2, name: "coke", price: 113.23, quantity: 100},
-        { id: 3, name: "peanuts", price: 116.23, quantity: 100}
-      ]},
-      
-    ]
-    }
-  }
+
 }
 </script>
 
