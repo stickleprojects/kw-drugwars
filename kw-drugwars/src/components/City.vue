@@ -40,7 +40,7 @@
 export default {
     name:"city-info",
     props: {
-        'buyitem': 
+        
         'user': {
             name: String,
             balance: Number
