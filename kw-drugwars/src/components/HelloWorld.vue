@@ -9,7 +9,7 @@
     
     <div>
       <div v-for="city in cities" v-bind:key="city.name">
-        <City :city="city" :user="user" :buyitem=""/>
+        <City :city="city" :user="user" />
       </div>
     </div>
   </div>
@@ -26,11 +26,6 @@ export default {
   components: {
     City
   },
-  methods: {
-    buyItem(id, qty, price) {
-
-    }
-  }
   data() {
     return {
       user: {
