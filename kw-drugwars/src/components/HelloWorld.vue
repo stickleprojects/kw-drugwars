@@ -1,12 +1,7 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    
+    <h1>Welcome {{ user.name }}</h1>
+    <h2>Balance {{ user.balance }} {{ user.currency }}</h2>
     <div>
       <div v-for="city in cities" v-bind:key="city.name">
         <City :city="city" :user="user" />
@@ -30,7 +25,11 @@ export default {
     return {
       user: {
         name:"kieron",
-        balance:214.34
+        balance:214.34,
+        currency:"GBP",
+        products:[
+          { id: 1, name: "heroin",  quantity: 23}
+        ]
       },
       cities:[
       { name:"london", products:[
