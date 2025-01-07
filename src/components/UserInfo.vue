@@ -1,14 +1,18 @@
 <template>
-    <div class="userinfodiv">
-        <h2 class="productlistlabel">Inventory</h2>
+    <b-card title="User Info" class="shadow p-3 mb-5 bg-white rounded" bg-variant="primary">
+        <b-list-group flush>
+            <b-list-group-item>Balance: {{ user.balance }}</b-list-group-item>
+            <b-list-group-item>You are carrying {{ user.products.length }} item(s)</b-list-group-item>
+        </b-list-group>
+
         <b-table class="productlist" striped hover :items="user.products" :fields="fields" primary-key="id">
             <!-- <template v-slot:cell(sell)="{ item }">
                 <span><b-btn v-if="canSell(item)" @click="sellItem(item)">sell</b-btn></span>
                 
             </template> -->
-            
+
         </b-table>
-</div>
+    </b-card>
 </template>
 
 
@@ -20,10 +24,10 @@ import { drugDataStore } from '@/datastore';
 <script>
 
 export default {
-    name:"city-info",
+    name: "city-info",
     props: {
-        'user':Object,
-        
+        'user': Object,
+
     },
     methods: {
         canSell(item) {
@@ -38,21 +42,21 @@ export default {
             console.log("selling %d items", qty);
 
             this.drugStore.sellProduct(this.user, item.id, qty, item.price)
-            
+
             console.log(item.id);
         },
     },
-   
+
     data() {
         return {
-        drugStore: drugDataStore(),
-        fields:[
-        
-            {key:"name", sortable: true, tdClass:"text"},
-            {key:"quantity", sortable: true, tdClass:"price", label:"Quantity Available"},
-            {key:"sell"},
-            
-        ],
+            drugStore: drugDataStore(),
+            fields: [
+
+                { key: "name", sortable: true, tdClass: "text" },
+                { key: "quantity", sortable: true, tdClass: "price", label: "Quantity Available" },
+                { key: "sell" },
+
+            ],
         }
     }
 }
@@ -63,20 +67,17 @@ export default {
     text-align: left;
     font-size: 1em;
 }
+
 .productlist {
     width: 75%;
 }
-.citydiv {
-    border: 1px solid black;
-    box-shadow: 10px 10px;
-    margin: 40px;
-    padding: 10px;
-    width: 50%;
-    font-family: 'Courier New', Courier, monospace;
-}
 
-.cityname {
-    text-align: left;
-    font-size: 2em;
+.bg-primary {
+
+    .card-body,
+    .list-group-item {
+        background-color: palegoldenrod;
+    }
+
 }
 </style>

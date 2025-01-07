@@ -5,20 +5,20 @@
     <div>
       <b-row>
         <b-col>
-      <b-container fluid>
-        <h1>Your Wallet</h1>
-        <UserInfo :user="store.user"/>
-      </b-container>
-    </b-col>
-    <b-col>
-      <b-container fluid>
-        <h1>Cities</h1>
-        <div v-for="city in store.cities" v-bind:key="city.name">
-          <City :city="city" :user="store.user" />
-        </div>
-      </b-container>
-    </b-col>
-    </b-row>
+          <b-container fluid="sm">
+
+            <UserInfo :user="store.user" />
+          </b-container>
+        </b-col>
+        <b-col>
+          <b-container fluid="xl">
+            <h1>Cities</h1>
+            <div v-for="city in store.cities" v-bind:key="city.name">
+              <City :city="city" :user="store.user" />
+            </div>
+          </b-container>
+        </b-col>
+      </b-row>
     </div>
   </div>
 </template>
@@ -35,44 +35,36 @@ import UserInfo from './UserInfo.vue';
 
 export default {
   name: 'GamePlay',
-  
+
   components: {
     City,
-    
+
   },
 
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style >
+<style>
 .price {
   text-align: right;
-  
+
 }
+
 .text {
   text-align: left;
 }
 
-.userinfo {
-  display: block;
-  float: left;
-}
-.citylist {
-  display: block;
-  float: right;
-}
-h3 {
-  margin: 40px 0 0;
-}
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: #42b983;
 }

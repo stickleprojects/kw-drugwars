@@ -1,19 +1,19 @@
 <template>
-    <div class="citydiv">
-        <h1 class="cityname">{{city.name}}</h1>
+    <b-card v-bind:title="city.name" class="shadow p-3 mb-5 bg-white rounded">
+
         <h2 class="productlistlabel">Products & Prices</h2>
         <b-table class="productlist" striped hover :items="city.products" :fields="fields" primary-key="id">
             <template v-slot:cell(buy)="{ item }">
                 <span><b-btn @click="buyItem(item)">buy</b-btn></span>
-                
+
             </template>
             <template v-slot:cell(sell)="{ item }">
                 <span><b-btn v-if="canSell(item)" @click="sellItem(item)">sell</b-btn></span>
-                
+
             </template>
-            
+
         </b-table>
-</div>
+    </b-card>
 </template>
 
 
@@ -25,11 +25,11 @@ import { drugDataStore } from '@/datastore';
 <script>
 
 export default {
-    name:"city-info",
+    name: "city-info",
     props: {
-        'user':Object,
-        'city':Object
-        
+        'user': Object,
+        'city': Object
+
     },
     methods: {
         canSell(item) {
@@ -44,7 +44,7 @@ export default {
             console.log("selling %d items", qty);
 
             this.drugStore.sellProduct(this.user, this.city, item.id, qty);
-            
+
             console.log(item.id);
         },
         buyItem(item) {
@@ -57,23 +57,23 @@ export default {
 
             this.drugStore.buyProduct(this.user, this.city, item.id, qty);
 
-            
+
             console.log(item.id);
         }
     },
-   
+
     data() {
         return {
-        drugStore: drugDataStore(),
-        fields:[
-        
-            {key:"name", sortable: true, tdClass:"text"},
-            {key:"quantity", sortable: true, tdClass:"price", label:"Quantity Available"},
-            {key:"price", sortable: true, tdClass:"price"},
-            {key:"buy"},
-            {key:"sell"},
-            
-        ],
+            drugStore: drugDataStore(),
+            fields: [
+
+                { key: "name", sortable: true, tdClass: "text" },
+                { key: "quantity", sortable: true, tdClass: "price", label: "Quantity Available" },
+                { key: "price", sortable: true, tdClass: "price" },
+                { key: "buy" },
+                { key: "sell" },
+
+            ],
         }
     }
 }
@@ -84,15 +84,13 @@ export default {
     text-align: left;
     font-size: 1em;
 }
-.productlist {
-    width: 75%;
-}
+
+
 .citydiv {
     border: 1px solid black;
     box-shadow: 10px 10px;
-    margin: 40px;
+    margin: 10px;
     padding: 10px;
-    width: 50%;
     font-family: 'Courier New', Courier, monospace;
 }
 
