@@ -43,7 +43,7 @@ export default {
             }
             console.log("selling %d items", qty);
 
-            this.drugStore.sellProduct(this.user, item.id, qty, item.price)
+            this.drugStore.sellProduct(this.user, this.city, item.id, qty);
             
             console.log(item.id);
         },
@@ -55,18 +55,8 @@ export default {
             }
             console.log("buying %d items", qty);
 
-            if (qty > item.quantity) {
-                alert("thats too many, we only have " + item.quantity + " available!");
-                return;
-            }
+            this.drugStore.buyProduct(this.user, this.city, item.id, qty);
 
-            const total = qty * item.price;
-            if (total > this.user.balance) {
-                alert("Sorry " + this.user.name + ", but you cant afford that, its " + total + " and you only have " + this.user.balance);
-                return;
-            }
-
-            this.drugStore.buyProduct(this.user, item.id, qty, item.price)
             
             console.log(item.id);
         }

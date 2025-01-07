@@ -40,57 +40,80 @@ export const drugDataStore = defineStore("drugstore", {
       return true;
     },
 
-    sellProduct(user, productId, qty, itemPrice) {
-      if (!this.canSell(user, productId)) return false;
-
-      const userItemIndex = this.user.products.findIndex(
+    sellProduct(user, city, productId, quantity) {
+      const userItemIndex = user.products.findIndex(
         (x) => x.id == productId
       );
-      var userItem = this.user.products[userItemIndex];
+      var userItem = user.products[userItemIndex];
 
-      if (qty > userItem.quantity) {
-        alert(
-          "thats too many, you only have " + userItem.quantity + " available!"
-        );
+      if (!userItem) {
+        console.error("You cant sell that product, you dont have any!");
+        return
+      }
+      if (quantity > userItem.quantity) {
+        alert("You cant sell that many, you onlly have " + userItem.quantity);
+        return
+
+      }
+      const cityItemIndex = city.products.findIndex(x => x.id === productId);
+      const cityItem = city.products[cityItemIndex];
+
+      if (!cityItem) {
+        alert("You cannot sell that product in that city");
         return;
       }
-      const total = qty * itemPrice;
 
-      this.user.balance = round(this.user.balance + total, 2);
-      userItem.quantity -= qty;
-      this.user.products.splice(userItemIndex, 1);
+      const total = cityItem.price * quantity;
 
-      if (userItem.quantity > 0) {
-        this.user.products += userItem;
-      }
-      return true;
+      userItem.quantity -= quantity;
+      user.balance = round(user.balance + total, 2);
+      cityItem.quantity += quantity;
+
+      // update user inventory
+      city.products = [...city.products.filter(x => x.id !== productId), cityItem];
+      user.products = [...user.products.filter(x => x.id !== productId), userItem];
+
     },
-    buyProduct(user, productId, qty, itemPrice) {
-      const totalprice = qty * itemPrice;
-      if (totalprice > user.balance) {
-        console.log("you cant afford it");
-        return false;
-      }
-      this.user.balance = round(this.user.balance - totalprice, 2);
+    buyProduct(user, city, productId, quantity) {
+      const cityItemIndex = city.products.findIndex(x => x.id === productId);
+      const cityItem = city.products[cityItemIndex];
 
-      const userItemIndex = this.user.products.findIndex(
+      if (!cityItem) {
+        alert("You cannot buy that product in that city");
+        return;
+      }
+
+      const userItemIndex = user.products.findIndex(
         (x) => x.id == productId
       );
+      var userItem = user.products[userItemIndex];
 
-      var userItem = this.user.products[userItemIndex];
-
-      if (userItem) {
-        this.user.products.splice(userItemIndex, 1);
-        userItem.quantity += qty;
-      } else {
-        userItem = {
-          id: productId,
-          quantity: qty,
-        };
+      if (!userItem) {
+        userItem = { id: productId, quantity: 0, name: cityItem.name };
       }
-      this.user.products += userItem;
 
-      return true;
+      if (quantity > cityItem.quantity) {
+        alert("You cant buy that many, the max is " + cityItem.quantity);
+        return
+
+      }
+
+      const total = cityItem.price * quantity;
+
+      if (total > user.balance) {
+        alert("You cant afford that many, you only have " + user.balance);
+        return;
+      }
+
+      userItem.quantity += quantity;
+      user.balance = round(user.balance - total, 2);
+      cityItem.quantity += quantity;
+
+      // update user inventory
+      city.products = [...city.products.filter(x => x.id !== productId), cityItem];
+      user.products = [...user.products.filter(x => x.id !== productId), userItem];
+
     },
+
   },
 });
