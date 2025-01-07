@@ -15,6 +15,10 @@ export const drugDataStore = defineStore("drugstore", {
         currency: "GBP",
         products: [{ id: 1, name: "heroin", quantity: 23 }],
       },
+      balance_data: [
+        { username: "kieron", timestamp: "1 jan 2022", balance: 12.34 },
+        { username: "kieron", timestamp: "2 jan 2022", balance: 12.34 },
+      ],
       cities: [
         {
           name: "london",
@@ -41,21 +45,18 @@ export const drugDataStore = defineStore("drugstore", {
     },
 
     sellProduct(user, city, productId, quantity) {
-      const userItemIndex = user.products.findIndex(
-        (x) => x.id == productId
-      );
+      const userItemIndex = user.products.findIndex((x) => x.id == productId);
       var userItem = user.products[userItemIndex];
 
       if (!userItem) {
         console.error("You cant sell that product, you dont have any!");
-        return
+        return;
       }
       if (quantity > userItem.quantity) {
         alert("You cant sell that many, you onlly have " + userItem.quantity);
-        return
-
+        return;
       }
-      const cityItemIndex = city.products.findIndex(x => x.id === productId);
+      const cityItemIndex = city.products.findIndex((x) => x.id === productId);
       const cityItem = city.products[cityItemIndex];
 
       if (!cityItem) {
@@ -70,12 +71,17 @@ export const drugDataStore = defineStore("drugstore", {
       cityItem.quantity += quantity;
 
       // update user inventory
-      city.products = [...city.products.filter(x => x.id !== productId), cityItem];
-      user.products = [...user.products.filter(x => x.id !== productId), userItem];
-
+      city.products = [
+        ...city.products.filter((x) => x.id !== productId),
+        cityItem,
+      ];
+      user.products = [
+        ...user.products.filter((x) => x.id !== productId),
+        userItem,
+      ];
     },
     buyProduct(user, city, productId, quantity) {
-      const cityItemIndex = city.products.findIndex(x => x.id === productId);
+      const cityItemIndex = city.products.findIndex((x) => x.id === productId);
       const cityItem = city.products[cityItemIndex];
 
       if (!cityItem) {
@@ -83,9 +89,7 @@ export const drugDataStore = defineStore("drugstore", {
         return;
       }
 
-      const userItemIndex = user.products.findIndex(
-        (x) => x.id == productId
-      );
+      const userItemIndex = user.products.findIndex((x) => x.id == productId);
       var userItem = user.products[userItemIndex];
 
       if (!userItem) {
@@ -94,8 +98,7 @@ export const drugDataStore = defineStore("drugstore", {
 
       if (quantity > cityItem.quantity) {
         alert("You cant buy that many, the max is " + cityItem.quantity);
-        return
-
+        return;
       }
 
       const total = cityItem.price * quantity;
@@ -110,10 +113,14 @@ export const drugDataStore = defineStore("drugstore", {
       cityItem.quantity += quantity;
 
       // update user inventory
-      city.products = [...city.products.filter(x => x.id !== productId), cityItem];
-      user.products = [...user.products.filter(x => x.id !== productId), userItem];
-
+      city.products = [
+        ...city.products.filter((x) => x.id !== productId),
+        cityItem,
+      ];
+      user.products = [
+        ...user.products.filter((x) => x.id !== productId),
+        userItem,
+      ];
     },
-
   },
 });
