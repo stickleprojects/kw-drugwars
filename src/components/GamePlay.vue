@@ -7,6 +7,7 @@
         <b-col>
           <b-container fluid="sm">
 
+            <ProfitChart :user="store.user" />
             <UserInfo :user="store.user" />
           </b-container>
         </b-col>
@@ -31,6 +32,7 @@ const store = drugDataStore();
 <script>
 import City from './City.vue';
 import UserInfo from './UserInfo.vue';
+import ProfitChart from './ProfitChart.vue';
 
 
 export default {
