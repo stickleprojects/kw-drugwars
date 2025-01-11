@@ -36,6 +36,17 @@ export const drugDataStore = defineStore("drugstore", {
     };
   },
   actions: {
+    tick() {
+      // records the current profits
+      // debugger;  // eslint-disable-line no-debugger
+
+      const newRecord = {
+        username: this.user.name,
+        timestamp: this.balance_data.length + 1,
+        balance: this.user.balance
+      }
+      this.balance_data.push(newRecord);
+    },
     canSell(user, productid) {
       var userItem = this.user.products.find((x) => x.id == productid);
       if (!userItem) {
@@ -79,6 +90,8 @@ export const drugDataStore = defineStore("drugstore", {
         ...user.products.filter((x) => x.id !== productId),
         userItem,
       ];
+
+      this.tick();
     },
     buyProduct(user, city, productId, quantity) {
       const cityItemIndex = city.products.findIndex((x) => x.id === productId);
@@ -121,6 +134,8 @@ export const drugDataStore = defineStore("drugstore", {
         ...user.products.filter((x) => x.id !== productId),
         userItem,
       ];
+
+      this.tick();
     },
   },
 });
