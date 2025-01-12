@@ -13,6 +13,13 @@
             </template>
 
         </b-table>
+        <h2 class="productlistlabel">Destinations from here</h2>
+        <b-table class="destinationList" :items="city.destinations" :fields="destinationFields" primary-key="city">
+            <template v-slot:cell(goto)="{ item }">
+                <span><b-btn @click="gotoCity(item)">travel to here</b-btn></span>
+
+            </template>
+        </b-table>
     </b-card>
 </template>
 
@@ -47,6 +54,10 @@ export default {
 
             console.log(item.id);
         },
+        gotoCity(dest) {
+            console.log(dest);
+            this.drugStore.moveToCity(dest.name);
+        },
         buyItem(item) {
             let x = prompt("how many");
             var qty = parseInt(x);
@@ -74,6 +85,11 @@ export default {
                 { key: "sell" },
 
             ],
+            destinationFields: [
+                { key: 'name', sortable: true, tdClass: "text" },
+                { key: 'distance', sortable: true, tdClass: "number" },
+                { key: "goto" }
+            ]
         }
     }
 }
@@ -81,8 +97,10 @@ export default {
 
 <style>
 .productlistlabel {
-    text-align: left;
-    font-size: 1em;
+    text-align: center;
+    font-size: 0.8em;
+    background-color: beige;
+    border-top: 1px solid black;
 }
 
 
@@ -97,5 +115,16 @@ export default {
 .cityname {
     text-align: left;
     font-size: 2em;
+}
+
+.b-table {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8em;
+
+}
+
+.b-table button {
+    font-size: 1em;
+    padding: 0.1em 3em
 }
 </style>

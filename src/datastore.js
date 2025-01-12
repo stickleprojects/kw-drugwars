@@ -14,15 +14,18 @@ export const drugDataStore = defineStore("drugstore", {
         balance: 284.34,
         currency: "GBP",
         products: [{ id: 1, name: "heroin", quantity: 23 }],
+        city: "london",
       },
-      balance_data: [
-        { username: "kieron", timestamp: "1 jan 2022", balance: 12.34 },
-        { username: "kieron", timestamp: "2 jan 2022", balance: 12.34 },
-      ],
+      balance_data: [],
       cities: [
         {
           name: "london",
           products: [{ id: 1, name: "heroin", price: 23.23, quantity: 23 }],
+          destinations: [
+            // cities you can go to
+            { name: "new york", distance: 10 },
+            { name: "paris", distance: 5 },
+          ],
         },
         {
           name: "new york",
@@ -31,21 +34,102 @@ export const drugDataStore = defineStore("drugstore", {
             { id: 2, name: "coke", price: 113.23, quantity: 100 },
             { id: 3, name: "peanuts", price: 116.23, quantity: 100 },
           ],
+          destinations: [
+            // cities you can go to
+            { name: "london", distance: 10 },
+            { name: "paris", distance: 12 },
+          ],
+        },
+        {
+          name: "paris",
+          products: [
+            { id: 1, name: "heroin", price: 93.23, quantity: 33 },
+            { id: 2, name: "coke", price: 113.23, quantity: 100 },
+            { id: 3, name: "peanuts", price: 116.23, quantity: 100 },
+          ],
+          destinations: [
+            // cities you can go to
+            { name: "london", distance: 5 },
+            { name: "new york", distance: 12 },
+          ],
         },
       ],
     };
   },
   actions: {
-    tick() {
+    tick(tickCount) {
       // records the current profits
+
       // debugger;  // eslint-disable-line no-debugger
 
       const newRecord = {
         username: this.user.name,
         timestamp: this.balance_data.length + 1,
-        balance: this.user.balance
-      }
+        balance: this.user.balance,
+      };
       this.balance_data.push(newRecord);
+
+      // run tick engine
+      if (!this.tickCount) tickCount = 1;
+
+      for (var i = 0; i < tickCount; i++) {
+        this.updatePrices();
+      }
+    },
+    getNewProductPrice(product) {
+      // pricing algo based on this article https://medium.com/@MachineLearningYearning/how-to-simulate-stock-prices-452042862989
+
+      const currentPrice = product.price;
+
+      const r1 = Math.random();
+      const r2 = Math.random();
+
+      // r2 greater so increase the price
+      let newPrice;
+      if (r2 > r1) {
+        newPrice = currentPrice * (1 + r1);
+      } else {
+        newPrice = currentPrice * r1;
+      }
+
+      return round(newPrice, 2);
+    },
+    updatePrices() {
+      this.cities.forEach((c) => {
+        c.products.forEach((p) => {
+          p.price = this.getNewProductPrice(p);
+        });
+      });
+    },
+    moveToCity(name) {
+      if (name === this.user.city) {
+        console.error("You are already in " + name);
+        return false;
+      }
+
+      const src = this.cities.find((x) => x.name === this.user.city);
+
+      // work out the distance
+      const destination = src.destinations.find((x) => x.name === name);
+      if (!destination) {
+        console.error("You cannot go from " + this.user.city + " to " + name);
+        return false;
+      }
+
+      const distance = destination.distance;
+
+      // tick a few times
+      this.tick(distance);
+
+      this.user.city = destination.name;
+
+      return true;
+    },
+
+    getDestinationsfromCurrentCity() {
+      const currentCity = this.getCurrentCity();
+
+      return currentCity.destinations;
     },
     canSell(user, productid) {
       var userItem = this.user.products.find((x) => x.id == productid);
@@ -54,7 +138,10 @@ export const drugDataStore = defineStore("drugstore", {
       }
       return true;
     },
-
+    getCurrentCity() {
+      const currentCity = this.cities.find((x) => x.name === this.user.city);
+      return currentCity;
+    },
     sellProduct(user, city, productId, quantity) {
       const userItemIndex = user.products.findIndex((x) => x.id == productId);
       var userItem = user.products[userItemIndex];
@@ -123,7 +210,7 @@ export const drugDataStore = defineStore("drugstore", {
 
       userItem.quantity += quantity;
       user.balance = round(user.balance - total, 2);
-      cityItem.quantity += quantity;
+      cityItem.quantity -= quantity;
 
       // update user inventory
       city.products = [
