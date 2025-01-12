@@ -37,7 +37,7 @@ const data = computed(() => ({
   labels: [...Array(storeData.balance_data.value.length).keys()],
   datasets: [
     {
-      label: 'Data One',
+      label: 'Balance',
       backgroundColor: '#f87979',
       data: storeData.balance_data.value.map(x => x.balance)
     }
