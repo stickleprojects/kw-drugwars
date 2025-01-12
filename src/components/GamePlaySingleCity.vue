@@ -13,10 +13,8 @@
                 </b-col>
                 <b-col>
                     <b-container fluid="xl">
-                        <h1>Cities</h1>
-                        <div v-for="city in store.cities" v-bind:key="city.name">
-                            <City :city="city" :user="store.user" />
-                        </div>
+                        <City :city="store.getCurrentCity()" :user="store.user" />
+
                     </b-container>
                 </b-col>
             </b-row>

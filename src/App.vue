@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <GamePlay />
+    <GamePlaySingleCity />
   </div>
 </template>
 
-<script >
-import GamePlay from './components/GamePlay.vue';
+<script>
+import GamePlaySingleCity from './components/GamePlaySingleCity.vue';
+
 
 export default {
   name: 'App',
   components: {
-    GamePlay
+    GamePlaySingleCity
   }
 }
 </script>

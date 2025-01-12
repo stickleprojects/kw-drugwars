@@ -14,7 +14,7 @@ export const drugDataStore = defineStore("drugstore", {
         balance: 284.34,
         currency: "GBP",
         products: [{ id: 1, name: "heroin", quantity: 23 }],
-        city: "",
+        city: "london",
       },
       balance_data: [],
       cities: [
@@ -23,8 +23,8 @@ export const drugDataStore = defineStore("drugstore", {
           products: [{ id: 1, name: "heroin", price: 23.23, quantity: 23 }],
           destinations: [
             // cities you can go to
-            { city: "new york", distance: 10 },
-            { city: "paris", distance: 5 },
+            { name: "new york", distance: 10 },
+            { name: "paris", distance: 5 },
           ],
         },
         {
@@ -33,6 +33,24 @@ export const drugDataStore = defineStore("drugstore", {
             { id: 1, name: "heroin", price: 93.23, quantity: 33 },
             { id: 2, name: "coke", price: 113.23, quantity: 100 },
             { id: 3, name: "peanuts", price: 116.23, quantity: 100 },
+          ],
+          destinations: [
+            // cities you can go to
+            { name: "london", distance: 10 },
+            { name: "paris", distance: 12 },
+          ],
+        },
+        {
+          name: "paris",
+          products: [
+            { id: 1, name: "heroin", price: 93.23, quantity: 33 },
+            { id: 2, name: "coke", price: 113.23, quantity: 100 },
+            { id: 3, name: "peanuts", price: 116.23, quantity: 100 },
+          ],
+          destinations: [
+            // cities you can go to
+            { name: "london", distance: 5 },
+            { name: "new york", distance: 12 },
           ],
         },
       ],
@@ -109,7 +127,7 @@ export const drugDataStore = defineStore("drugstore", {
     },
 
     getDestinationsfromCurrentCity() {
-      const currentCity = this.cities.find((x) => x.name === this.user.city);
+      const currentCity = this.getCurrentCity();
 
       return currentCity.destinations;
     },
@@ -120,7 +138,10 @@ export const drugDataStore = defineStore("drugstore", {
       }
       return true;
     },
-
+    getCurrentCity() {
+      const currentCity = this.cities.find((x) => x.name === this.user.city);
+      return currentCity;
+    },
     sellProduct(user, city, productId, quantity) {
       const userItemIndex = user.products.findIndex((x) => x.id == productId);
       var userItem = user.products[userItemIndex];
