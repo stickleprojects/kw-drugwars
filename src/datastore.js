@@ -38,7 +38,7 @@ function generateCityData() {
         const price = 23;
         const quantity = 20;
         return {
-          name: p.name,
+          name: p,
           price: price,
           quantity: quantity,
         };
