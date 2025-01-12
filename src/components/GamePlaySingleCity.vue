@@ -1,7 +1,11 @@
 <template>
     <div class="hello">
         <h1>Welcome {{ store.user.name }}</h1>
-        <h2>Balance {{ store.user.balance }} {{ store.user.currency }}</h2>
+        <div class="info">
+            <p>Objective, make a profit by buying/sellnig here and travelling to another location and repeating</p>
+            <p>Your balance and wallet are shown on the left</p>
+        </div>
+
         <div>
             <b-row>
                 <b-col>
@@ -67,5 +71,11 @@ li {
 
 a {
     color: #42b983;
+}
+
+.info {
+    text-align: left;
+    background-color: yellowgreen;
+
 }
 </style>
