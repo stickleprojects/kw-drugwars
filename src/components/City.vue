@@ -64,9 +64,11 @@ export default {
             this.drugStore.moveToCity(dest.name);
         },
         buyItem(item) {
-            const maxYouCanAfford = clamp(0, Math.round(this.user.balance / item.price, 0), item.quantity);
+            const maxYouCanAfford = Math.round(this.user.balance / item.price, 0);
 
-            let x = prompt("how many", maxYouCanAfford);
+            const maxAllowed = item.quantity;
+
+            let x = prompt("how many", clamp(maxYouCanAfford, 0, maxAllowed));
             var qty = parseInt(x);
             if (isNaN(qty)) {
                 return;
