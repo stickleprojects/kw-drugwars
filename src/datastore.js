@@ -6,54 +6,100 @@ function round(num, decimalPlaces = 0) {
   return Math.round(n) / p;
 }
 
+function generateCityData() {
+  const cities = ["london", "new york", "paris"];
+  const edges = [
+    { from: "london", to: "new york", distance: 15 },
+    { from: "london", to: "paris", distance: 7 },
+    { from: "paris", to: "new york", distance: 10 },
+    { from: "paris", to: "london", distance: 7 },
+    { from: "new york", to: "paris", distance: 10 },
+    { from: "new york", to: "london", distance: 15 },
+  ];
+  const products = ["heroin", "coke", "weed", "shrooms"];
+
+  let data = {
+    cities: [],
+  };
+  cities.forEach((citydef) => {
+    const cityName = citydef;
+
+    const newCity = {
+      name: cityName,
+      destinations: edges
+        .filter((e) => e.from === cityName)
+        .map((e) => {
+          return {
+            name: e.to,
+            distance: e.distance,
+          };
+        }),
+      products: products.map((p) => {
+        const price = 23;
+        const quantity = 20;
+        return {
+          name: p.name,
+          price: price,
+          quantity: quantity,
+        };
+      }),
+    };
+    data.cities.push(newCity);
+  });
+
+  return data;
+}
 export const drugDataStore = defineStore("drugstore", {
   state: () => {
+    const cityData = generateCityData();
+
     return {
       user: {
         name: "kieron",
         balance: 284.34,
         currency: "GBP",
-        products: [{ id: 1, name: "heroin", quantity: 23 }],
+        products: [],
         city: "london",
       },
       balance_data: [],
-      cities: [
-        {
-          name: "london",
-          products: [{ id: 1, name: "heroin", price: 23.23, quantity: 23 }],
-          destinations: [
-            // cities you can go to
-            { name: "new york", distance: 10 },
-            { name: "paris", distance: 5 },
-          ],
-        },
-        {
-          name: "new york",
-          products: [
-            { id: 1, name: "heroin", price: 93.23, quantity: 33 },
-            { id: 2, name: "coke", price: 113.23, quantity: 100 },
-            { id: 3, name: "peanuts", price: 116.23, quantity: 100 },
-          ],
-          destinations: [
-            // cities you can go to
-            { name: "london", distance: 10 },
-            { name: "paris", distance: 12 },
-          ],
-        },
-        {
-          name: "paris",
-          products: [
-            { id: 1, name: "heroin", price: 93.23, quantity: 33 },
-            { id: 2, name: "coke", price: 113.23, quantity: 100 },
-            { id: 3, name: "peanuts", price: 116.23, quantity: 100 },
-          ],
-          destinations: [
-            // cities you can go to
-            { name: "london", distance: 5 },
-            { name: "new york", distance: 12 },
-          ],
-        },
-      ],
+      cities: cityData.cities,
+      // cities: [
+      //   {
+      //     name: "london",
+      //     products: [{ id: 1, name: "heroin", price: 23.23, quantity: 23 }],
+      //     destinations: [
+      //       // cities you can go to
+      //       { name: "new york", distance: 10 },
+      //       { name: "paris", distance: 5 },
+      //     ],
+      //   },
+      //   {
+      //     name: "new york",
+      //     products: [
+      //       { id: 1, name: "heroin", price: 93.23, quantity: 33 },
+      //       { id: 2, name: "coke", price: 113.23, quantity: 100 },
+      //       { id: 3, name: "peanuts", price: 116.23, quantity: 100 },
+      //     ],
+      //     destinations: [
+      //       // cities you can go to
+      //       { name: "london", distance: 10 },
+      //       { name: "paris", distance: 12 },
+      //     ],
+      //   },
+      //   {
+      //     name: "paris",
+      //     products: [
+      //       { id: 1, name: "heroin", price: 93.23, quantity: 33 },
+      //       { id: 2, name: "coke", price: 113.23, quantity: 100 },
+      //       { id: 3, name: "peanuts", price: 116.23, quantity: 100 },
+      //     ],
+      //     destinations: [
+      //       // cities you can go to
+      //       { name: "london", distance: 5 },
+      //       { name: "new york", distance: 12 },
+      //     ],
+      //   },
+      // ],
     };
   },
   actions: {
