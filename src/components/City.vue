@@ -31,6 +31,9 @@ import { drugDataStore } from '@/datastore';
 
 <script>
 
+function clamp(number, min, max) {
+    return Math.max(min, Math.min(number, max));
+}
 export default {
     name: "city-info",
     props: {
@@ -43,7 +46,9 @@ export default {
             return this.drugStore.canSell(this.user, item.id);
         },
         sellItem(item) {
-            let x = prompt("how many");
+            const maxToSell = this.user.products.find(x => x.name === item.name).quantity;
+
+            let x = prompt("how many", maxToSell);
             var qty = parseInt(x);
             if (isNaN(qty)) {
                 return;
@@ -59,7 +64,9 @@ export default {
             this.drugStore.moveToCity(dest.name);
         },
         buyItem(item) {
-            let x = prompt("how many");
+            const maxYouCanAfford = clamp(0, Math.round(this.user.balance / item.price, 0), item.quantity);
+
+            let x = prompt("how many", maxYouCanAfford);
             var qty = parseInt(x);
             if (isNaN(qty)) {
                 return;
