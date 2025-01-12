@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { GenerateCityData } from "./datagenerator";
 
 function round(num, decimalPlaces = 0) {
   var p = Math.pow(10, decimalPlaces);
@@ -6,52 +7,9 @@ function round(num, decimalPlaces = 0) {
   return Math.round(n) / p;
 }
 
-function generateCityData() {
-  const cities = ["london", "new york", "paris"];
-  const edges = [
-    { from: "london", to: "new york", distance: 15 },
-    { from: "london", to: "paris", distance: 7 },
-    { from: "paris", to: "new york", distance: 10 },
-    { from: "paris", to: "london", distance: 7 },
-    { from: "new york", to: "paris", distance: 10 },
-    { from: "new york", to: "london", distance: 15 },
-  ];
-  const products = ["heroin", "coke", "weed", "shrooms"];
-
-  let data = {
-    cities: [],
-  };
-  cities.forEach((citydef) => {
-    const cityName = citydef;
-
-    const newCity = {
-      name: cityName,
-      destinations: edges
-        .filter((e) => e.from === cityName)
-        .map((e) => {
-          return {
-            name: e.to,
-            distance: e.distance,
-          };
-        }),
-      products: products.map((p) => {
-        const price = 23;
-        const quantity = 20;
-        return {
-          name: p,
-          price: price,
-          quantity: quantity,
-        };
-      }),
-    };
-    data.cities.push(newCity);
-  });
-
-  return data;
-}
 export const drugDataStore = defineStore("drugstore", {
   state: () => {
-    const cityData = generateCityData();
+    const cityData = GenerateCityData();
 
     return {
       user: {
