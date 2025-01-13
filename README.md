@@ -1,5 +1,5 @@
-# kw-drugwars
-build status 
+# drugwars
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/7d0f0335-f7fe-4968-bad0-dafc28f000f1/deploy-status)](https://app.netlify.com/sites/kw-druugwars/deploys)
 
 
