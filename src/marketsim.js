@@ -1,28 +1,43 @@
-export default function GetMarketPrices() {
-  const T = 0.5; // haf a year
-  const delta_T = 1 / 252; // each day is 1/252 of a trading year
-  const n = Math.round(T / delta_T, 0); // total numbe rof random samples
 
-  const s0 = 20; // initial price of stock
-  const mu = 1; // drift (how quicklythe price gains/loses value)
-  const sigma = 1; // volatilitiy (how much it jumps around)
 
-  const k = 1000; // the number of prices to generate
-}
+export default marketSim(productName, city) {
 
-function simulatePrices(n, k, mu, sigma, delta_t) {
-  const r = mu * delta_t + sigma * Math.sqrt(delta_t) * Math.random;
-}
+  const productInfo = city.products.find(x => x.name === productName);
+  const demand = 15;
 
-function normal(mu, sigma, nsamples) {
-  if (!nsamples) nsamples = 6;
-  if (!sigma) sigma = 1;
-  if (!mu) mu = 0;
+  const available = productInfo.quantity;
 
-  var run_total = 0;
-  for (var i = 0; i < nsamples; i++) {
-    run_total += Math.random();
+  let increaseBasedOnDemand = 1;
+
+  if (demand > available) {
+    // push up the price
+    increaseBasedOnDemand = 1
+  } else {
+    // the price should drop
+    increaseBasedOnDemand = -1
   }
+  // if recent trades are increasing the quantity
+  const trend = getProductTrend(productInfo);
 
-  return (sigma * (run_total - nsamples / 2)) / (nsamples / 2) + mu;
+  // price is going up
+  if (trend.price > 1) {
+
+  }
+}
+
+function getProductTrend(exchange, productInfo) {
+  const trades = exchange.getTradesForProduct(productInfo);
+
+  const firstTrade = trades[0];
+  const lastTrade = trades[trades.length - 1];
+
+  trand = {
+    quantity: lastTrade.quantity / firstTrade.quantity,
+    price: lastTrade.price / firstTrade.price;
+  }
+  return trend;
+}
+
+
+
 }

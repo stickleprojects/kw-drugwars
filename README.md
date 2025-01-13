@@ -1,5 +1,10 @@
 # kw-drugwars
 
+Replica of the old windows drugwars game - try to make money by buying/selling drugs.
+I plan to update the prices by modelling some demand or other models to make the prices fluctuate, at the moment its only simple 2 point random number (if a>b then increase by a else decrease by a)
+
+see the netlify app running [here](https://kw-druugwars.netlify.app/)
+
 ## Project setup
 
 ```
