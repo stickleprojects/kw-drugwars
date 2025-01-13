@@ -7,14 +7,28 @@ function round(num, decimalPlaces = 0) {
   return Math.round(n) / p;
 }
 
+function randomIntFromInterval(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 export const drugDataStore = defineStore("drugstore", {
   state: () => {
     const cityData = GenerateCityData();
 
+    const usernames = ['Captain Pugwash',
+      'Seaman Staines',
+      'Slartebartfast',
+      'Stormageddon, Dark lord of all',
+      'Brave Sir Robin',
+      'Ernie the milkman'
+    ];
+    const selectedUsername = usernames[randomIntFromInterval(0, usernames.length - 1)];
+
+    const openingBalance = randomIntFromInterval(250, 3000) + 0.12;
+
     return {
       user: {
-        name: "kieron",
-        balance: 284.34,
+        name: selectedUsername,
+        balance: openingBalance,
         currency: "GBP",
         products: [],
         city: "london",
